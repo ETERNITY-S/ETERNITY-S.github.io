@@ -1,5 +1,7 @@
-console.log("LightBringer loaded successfully!");
+setTimeout(() => {
 
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("Website ready");
-});
+    document.getElementById("splash").style.display = "none";
+
+    document.getElementById("login-container").style.display = "flex";
+
+}, 3000);
