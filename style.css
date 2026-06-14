@@ -256,3 +256,34 @@ body{
     margin-top:15px;
     font-size:24px;
 }
+/* FRIENDS PAGE */
+
+.friends-container{
+    max-width:900px;
+    margin:40px auto;
+}
+
+.friend-card{
+    background:white;
+    padding:20px;
+    margin-bottom:15px;
+
+    border-radius:20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.friend-card button{
+    padding:10px 20px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#38BDF8;
+    color:white;
+    cursor:pointer;
+}
