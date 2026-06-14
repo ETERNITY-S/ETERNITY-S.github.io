@@ -517,3 +517,31 @@ button:hover{
     transition:0.2s;
     cursor:pointer;
 }
+/* SETTINGS */
+
+.settings-container{
+    max-width:900px;
+    margin:40px auto;
+}
+
+.settings-card{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.settings-card input,
+.settings-card textarea{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:1px solid #ccc;
+    border-radius:12px;
+}
+
+.settings-card textarea{
+    height:100px;
+    resize:none;
+}
