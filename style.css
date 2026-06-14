@@ -151,3 +151,26 @@ body{
     color:#38BDF8;
     font-weight:bold;
 }
+.forgot-password{
+    text-align:right;
+    margin-bottom:15px;
+}
+
+.forgot-password a{
+    color:#38BDF8;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.login-box{
+    backdrop-filter:blur(10px);
+}
+
+body{
+    background:
+    linear-gradient(
+        180deg,
+        #dbeafe,
+        #f8fafc
+    );
+}
