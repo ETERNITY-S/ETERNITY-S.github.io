@@ -141,3 +141,13 @@ body{
 .signup-box button{
     width:100%;
 }
+.account-link{
+    margin-top:20px;
+    color:#64748b;
+}
+
+.account-link a{
+    text-decoration:none;
+    color:#38BDF8;
+    font-weight:bold;
+}
