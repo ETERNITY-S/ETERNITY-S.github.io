@@ -287,3 +287,61 @@ body{
     color:white;
     cursor:pointer;
 }
+/* MESSAGES PAGE */
+
+.messages-layout{
+    display:flex;
+    height:calc(100vh - 80px);
+}
+
+.chat-list{
+    width:280px;
+    background:white;
+    padding:20px;
+    box-shadow:2px 0 10px rgba(0,0,0,0.08);
+}
+
+.chat-user{
+    padding:15px;
+    margin-top:10px;
+    background:#f8fafc;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+.chat-window{
+    flex:1;
+    padding:30px;
+    display:flex;
+    flex-direction:column;
+}
+
+.message{
+    max-width:300px;
+    padding:12px 16px;
+    border-radius:15px;
+    margin-top:15px;
+}
+
+.received{
+    background:white;
+}
+
+.sent{
+    background:#38BDF8;
+    color:white;
+    margin-left:auto;
+}
+
+.message-input{
+    margin-top:auto;
+    display:flex;
+    gap:10px;
+}
+
+.message-input input{
+    flex:1;
+    padding:15px;
+    border-radius:12px;
+    border:1px solid #ccc;
+}
