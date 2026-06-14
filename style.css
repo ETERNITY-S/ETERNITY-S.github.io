@@ -399,3 +399,17 @@ body{
 .timeline{
     margin-top:30px;
 }
+/* NOTIFICATIONS */
+
+.notifications-container{
+    max-width:800px;
+    margin:40px auto;
+}
+
+.notification-card{
+    background:white;
+    padding:20px;
+    margin-bottom:15px;
+    border-radius:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
