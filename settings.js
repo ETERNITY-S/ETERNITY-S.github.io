@@ -1,17 +1,77 @@
-import { auth } from "./firebase.js";
+import { auth, db } from "./firebase.js";
 
 import {
-    signOut
+    signOut,
+    onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+import {
+    doc,
+    getDoc,
+    updateDoc
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const logoutBtn =
     document.getElementById("logoutBtn");
 
+const saveProfileBtn =
+    document.getElementById("saveProfileBtn");
+
+let currentUser = null;
+
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+
+        window.location.href = "index.html";
+
+        return;
+    }
+
+    currentUser = user;
+
+    const userRef =
+        doc(db, "users", user.uid);
+
+    const userSnap =
+        await getDoc(userRef);
+
+    if (userSnap.exists()) {
+
+        const data = userSnap.data();
+
+        document.getElementById("usernameInput").value =
+            data.username || "";
+
+        document.getElementById("bioInput").value =
+            data.bio || "";
+    }
+
+});
+
+saveProfileBtn.addEventListener("click", async () => {
+
+    const username =
+        document.getElementById("usernameInput").value;
+
+    const bio =
+        document.getElementById("bioInput").value;
+
+    await updateDoc(
+        doc(db, "users", currentUser.uid),
+        {
+            username: username,
+            bio: bio
+        }
+    );
+
+    alert("Profile updated successfully");
+
+});
+
 logoutBtn.addEventListener("click", async () => {
 
     await signOut(auth);
-
-    alert("Logged out successfully");
 
     window.location.href = "index.html";
 
