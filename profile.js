@@ -37,4 +37,3 @@ onAuthStateChanged(auth, async (user) => {
     }
 
 });
-});
