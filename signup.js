@@ -15,11 +15,14 @@ signupBtn.addEventListener("click", async () => {
 
   try {
 
-    await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+   const userCredential =
+  await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+
+const user = userCredential.user;
 
     alert("Account created successfully!");
 
