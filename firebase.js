@@ -14,18 +14,12 @@ import {
 // YOUR FIREBASE CONFIG
 const firebaseConfig = {
 
-  apiKey: "PASTE_YOUR_API_KEY",
-
-  authDomain: "PASTE_YOUR_AUTH_DOMAIN",
-
-  projectId: "PASTE_YOUR_PROJECT_ID",
-
-  storageBucket: "PASTE_YOUR_STORAGE_BUCKET",
-
-  messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID",
-
-  appId: "PASTE_YOUR_APP_ID"
-
+ apiKey: "AIzaSyDwekdzJdBppnAnxz6PXCFYld4m-5UtWEE",
+  authDomain: "eternity-s.firebaseapp.com",
+  projectId: "eternity-s",
+  storageBucket: "eternity-s.firebasestorage.app",
+  messagingSenderId: "879216465621",
+  appId: "1:879216465621:web:27be5037e42e7cf4fa345c"
 };
 
 // Initialize Firebase
