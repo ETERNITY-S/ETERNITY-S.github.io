@@ -1,8 +1,13 @@
-import { auth, db } from "./firebase.js";
-
 import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+    collection,
+    addDoc,
+    getDocs,
+    orderBy,
+    query,
+    serverTimestamp,
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 import {
     collection,
@@ -14,8 +19,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 let currentUser = null;
+let currentUsername = "";
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
 
     if (!user) {
         window.location.href = "index.html";
@@ -23,6 +29,18 @@ onAuthStateChanged(auth, (user) => {
     }
 
     currentUser = user;
+
+    const userRef =
+        doc(db, "users", user.uid);
+
+    const userSnap =
+        await getDoc(userRef);
+
+    if (userSnap.exists()) {
+
+        currentUsername =
+            userSnap.data().username;
+    }
 
     loadPosts();
 });
@@ -37,7 +55,7 @@ postBtn.addEventListener("click", async () => {
 
     await addDoc(collection(db, "posts"), {
 
-        author: currentUser.email,
+        author: currentUsername,
         content: text,
         createdAt: serverTimestamp()
 
