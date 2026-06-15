@@ -1,90 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings - LightBringer</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+import { auth, db } from "./firebase.js";
 
-<nav class="feed-nav">
-    <div class="brand">LightBringer</div>
+import {
+    signOut,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-    <div class="nav-links">
-        <a href="feed.html">Home</a>
-        <a href="friends.html">Friends</a>
-        <a href="messages.html">Messages</a>
-        <a href="profile.html">Profile</a>
-        <a href="notifications.html">Notifications</a>
-        <a href="search.html">Search</a>
-        <a href="friend-requests.html">Requests</a>
-        <a href="settings.html">Settings</a>
-    </div>
-</nav>
+import {
+    doc,
+    getDoc,
+    updateDoc
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-<div class="settings-container">
+const logoutBtn =
+    document.getElementById("logoutBtn");
 
-    <h2>Account Settings</h2>
+const saveProfileBtn =
+    document.getElementById("saveProfileBtn");
 
-    <div class="settings-card">
+let currentUser = null;
 
-        <h3>Username</h3>
+onAuthStateChanged(auth, async (user) => {
 
-        <input id="usernameInput" type="text">
+    if (!user) {
 
-        <p>
-            Username can be changed once every 7 days.
-        </p>
+        window.location.href = "index.html";
 
-    </div>
+        return;
+    }
 
-    <div class="settings-card">
+    currentUser = user;
 
-        <h3>Bio</h3>
+    const userRef =
+        doc(db, "users", user.uid);
 
-       <textarea
-id="bioInput"
-maxlength="100"
-placeholder="Maximum 100 characters">
-</textarea>
-        <button id="saveProfileBtn">
-    Save Profile
-</button>
+    const userSnap =
+        await getDoc(userRef);
 
-    </div>
+    if (userSnap.exists()) {
 
-    <div class="settings-card">
+        const data = userSnap.data();
 
-        <h3>Privacy</h3>
+        document.getElementById("usernameInput").value =
+            data.username || "";
 
-        <label>
-            <input type="checkbox" checked>
-            Friends Only Posts
-        </label>
+        document.getElementById("bioInput").value =
+            data.bio || "";
+    }
 
-    </div>
+});
 
-    <div class="settings-card">
+saveProfileBtn.addEventListener("click", async () => {
 
-        <h3>Invites</h3>
+    const username =
+        document.getElementById("usernameInput").value;
 
-        <p>
-            Invite system coming soon.
-        </p>
+    const bio =
+        document.getElementById("bioInput").value;
 
-    </div>
-    
-<div class="settings-card">
+    await updateDoc(
+        doc(db, "users", currentUser.uid),
+        {
+            username: username,
+            bio: bio
+        }
+    );
 
-    <h3>Account</h3>
+    alert("Profile updated successfully");
 
-    <button id="logoutBtn">
-        Logout
-    </button>
+});
 
-</div>
-</div>
-<script type="module" src="settings.js"></script>
-</body>
+logoutBtn.addEventListener("click", async () => {
+
+    await signOut(auth);
+
+    window.location.href = "index.html";
+
+});
 </html>
