@@ -1,3 +1,9 @@
+import { auth, db } from "./firebase.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
 import {
     collection,
     addDoc,
@@ -8,7 +14,6 @@ import {
     doc,
     getDoc
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-
 
 let currentUser = null;
 let currentUsername = "";
