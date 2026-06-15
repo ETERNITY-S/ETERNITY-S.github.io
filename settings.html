@@ -1,82 +1,71 @@
-import { auth, db } from "./firebase.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - LightBringer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-import {
-    signOut,
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+<nav class="feed-nav">
+    <div class="brand">LightBringer</div>
 
-import {
-    doc,
-    getDoc,
-    updateDoc
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    <div class="nav-links">
+        <a href="feed.html">Home</a>
+        <a href="friends.html">Friends</a>
+        <a href="messages.html">Messages</a>
+        <a href="profile.html">Profile</a>
+        <a href="notifications.html">Notifications</a>
+        <a href="search.html">Search</a>
+        <a href="friend-requests.html">Requests</a>
+        <a href="settings.html">Settings</a>
+    </div>
+</nav>
 
-const logoutBtn =
-    document.getElementById("logoutBtn");
+<div class="settings-container">
 
-const saveProfileBtn =
-    document.getElementById("saveProfileBtn");
+    <h2>Account Settings</h2>
 
-let currentUser = null;
+    <div class="settings-card">
 
-onAuthStateChanged(auth, async (user) => {
+        <h3>Username</h3>
 
-    if (!user) {
+        <input
+            id="usernameInput"
+            type="text">
 
-        window.location.href = "index.html";
+    </div>
 
-        return;
-    }
+    <div class="settings-card">
 
-    currentUser = user;
+        <h3>Bio</h3>
 
-    const userRef =
-        doc(db, "users", user.uid);
+        <textarea
+            id="bioInput"
+            maxlength="100"
+            placeholder="Maximum 100 characters">
+        </textarea>
 
-    const userSnap =
-        await getDoc(userRef);
+        <br><br>
 
-    if (userSnap.exists()) {
+        <button id="saveProfileBtn">
+            Save Profile
+        </button>
 
-        const data = userSnap.data();
+    </div>
 
-        document.getElementById("usernameInput").value =
-            data.username || "";
+    <div class="settings-card">
 
-        document.getElementById("bioInput").value =
-            data.bio || "";
-    }
+        <button id="logoutBtn">
+            Logout
+        </button>
 
-});
+    </div>
 
-saveProfileBtn.addEventListener("click", async () => {
+</div>
 
-    const username =
-        document.getElementById("usernameInput").value;
-
-    const bio =
-        document.getElementById("bioInput").value;
-
-    await updateDoc(
-        doc(db, "users", currentUser.uid),
-        {
-            username: username,
-            bio: bio
-        }
-    );
-
-    alert("Profile updated successfully");
-
-});
-
-logoutBtn.addEventListener("click", async () => {
-
-    await signOut(auth);
-
-    window.location.href = "index.html";
-
-});
 <script type="module" src="settings.js"></script>
+
 </body>
 </html>
-
