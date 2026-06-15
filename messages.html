@@ -29,38 +29,37 @@
 
         <h3>Chats</h3>
 
-        <div class="chat-user">Alex</div>
-        <div class="chat-user">Emma</div>
-        <div class="chat-user">Sam</div>
+        <div id="friendsList"></div>
 
     </div>
 
     <div class="chat-window">
 
-        <h3>Alex</h3>
+        <h3 id="chatTitle">
+            Select a Friend
+        </h3>
 
-        <div class="message received">
-            Hello!
-        </div>
-
-        <div class="message sent">
-            Hi Alex 👋
-        </div>
+        <div id="messagesContainer"></div>
 
         <div class="message-input">
 
             <input
+                id="messageInput"
                 type="text"
                 placeholder="Type a message..."
             >
 
-            <button>Send</button>
+            <button id="sendBtn">
+                Send
+            </button>
 
         </div>
 
     </div>
 
 </div>
+
+<script type="module" src="messages.js"></script>
 
 </body>
 </html>
