@@ -77,9 +77,10 @@ async function loadFriends() {
                     <p>${friend.email}</p>
                 </div>
 
-                <button>
-                    Message
-                </button>
+               <button
+    onclick="window.location.href='user.html?uid=${request.receiverId}'">
+    View Profile
+</button>
 
             </div>
         `;
@@ -108,9 +109,10 @@ async function loadFriends() {
                     <p>${friend.email}</p>
                 </div>
 
-                <button>
-                    Message
-                </button>
+              <button
+    onclick="window.location.href='user.html?uid=${request.senderId}'">
+    View Profile
+</button>
 
             </div>
         `;
