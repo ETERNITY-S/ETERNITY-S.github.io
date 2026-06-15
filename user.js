@@ -43,8 +43,7 @@ async function loadUser() {
     document.getElementById("profileName").textContent =
         data.username;
 
-    document.getElementById("profileEmail").textContent =
-        data.email;
+   
 
     document.getElementById("profileBio").textContent =
         data.bio || "Welcome to ETERNITY-S";
