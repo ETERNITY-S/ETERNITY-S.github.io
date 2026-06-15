@@ -10,10 +10,14 @@ import {
     query,
     where,
     doc,
-    getDoc
+    getDoc,
+    addDoc,
+    orderBy,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 let currentUser = null;
+let selectedFriendId = null;
 
 onAuthStateChanged(auth, async (user) => {
 
@@ -105,11 +109,99 @@ async function loadFriends() {
     }
 }
 
-window.selectFriend = function(friendId, username) {
+window.selectFriend = async function(friendId, username) {
+
+    selectedFriendId = friendId;
 
     document.getElementById("chatTitle").textContent =
         username;
 
-    alert("Chat selected: " + username);
-
+    loadMessages();
 };
+
+document.getElementById("sendBtn")
+.addEventListener("click", async () => {
+
+    if (!selectedFriendId) {
+
+        alert("Select a friend first");
+
+        return;
+    }
+
+    const input =
+        document.getElementById("messageInput");
+
+    const text =
+        input.value.trim();
+
+    if (!text) return;
+
+    await addDoc(
+        collection(db, "messages"),
+        {
+            senderId: currentUser.uid,
+            receiverId: selectedFriendId,
+            text: text,
+            createdAt: serverTimestamp()
+        }
+    );
+
+    input.value = "";
+
+    loadMessages();
+});
+
+async function loadMessages() {
+
+    if (!selectedFriendId) return;
+
+    const container =
+        document.getElementById("messagesContainer");
+
+    container.innerHTML = "";
+
+    const snapshot =
+        await getDocs(
+            query(
+                collection(db, "messages"),
+                orderBy("createdAt")
+            )
+        );
+
+    snapshot.forEach((msgDoc) => {
+
+        const msg = msgDoc.data();
+
+        const belongsToChat =
+
+            (
+                msg.senderId === currentUser.uid &&
+                msg.receiverId === selectedFriendId
+            )
+
+            ||
+
+            (
+                msg.senderId === selectedFriendId &&
+                msg.receiverId === currentUser.uid
+            );
+
+        if (!belongsToChat) return;
+
+        const cssClass =
+            msg.senderId === currentUser.uid
+            ? "sent"
+            : "received";
+
+        container.innerHTML += `
+            <div class="message ${cssClass}">
+                ${msg.text}
+            </div>
+        `;
+    });
+
+    container.scrollTop =
+        container.scrollHeight;
+}
+                
