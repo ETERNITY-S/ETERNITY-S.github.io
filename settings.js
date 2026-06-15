@@ -16,3 +16,4 @@ logoutBtn.addEventListener("click", async () => {
     window.location.href = "index.html";
 
 });
+<script type="module" src="settings.js"></script>
