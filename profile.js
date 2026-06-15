@@ -1,40 +1,40 @@
 import { auth, db } from "./firebase.js";
 
 import {
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 import {
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 onAuthStateChanged(auth, async (user) => {
 
-  if (!user) {
-    window.location.href = "index.html";
-    return;
-  }
+    if (!user) {
 
-  const userRef = doc(db, "users", user.uid);
+        window.location.href = "index.html";
 
-  const userSnap = await getDoc(userRef);
+        return;
+    }
 
-  if (userSnap.exists()) {
+    const docRef = doc(db, "users", user.uid);
 
-    const data = userSnap.data();
+    const docSnap = await getDoc(docRef);
 
-    document.getElementById("username").textContent =
-      data.username || "User";
+    if (docSnap.exists()) {
 
-    document.getElementById("bio").textContent =
-      data.bio || "No bio yet";
+        const data = docSnap.data();
 
-    document.getElementById("postUser1").textContent =
-      data.username || "User";
+        document.getElementById("profileName").textContent =
+            data.username;
 
-    document.getElementById("postUser2").textContent =
-      data.username || "User";
-  }
+        document.getElementById("profileEmail").textContent =
+            data.email;
 
+        document.getElementById("profileBio").textContent =
+            data.bio || "Welcome to ETERNITY-S";
+    }
+
+});
 });
