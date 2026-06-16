@@ -11,8 +11,10 @@ import {
     getDocs,
     doc,
     getDoc,
-    updateDoc
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    updateDoc,
+    addDoc,
+    serverTimestamp
+}from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 let currentUser = null;
 
@@ -94,21 +96,32 @@ window.acceptRequest = async function(requestId) {
         }
     );
 
-    alert("Friend request accepted!");
+    const requestSnap =
+        await getDoc(
+            doc(db, "friendRequests", requestId)
+        );
 
-    loadRequests();
-};
+    const requestData =
+        requestSnap.data();
 
-window.rejectRequest = async function(requestId) {
+    const receiverSnap =
+        await getDoc(
+            doc(db, "users", currentUser.uid)
+        );
 
-    await updateDoc(
-        doc(db, "friendRequests", requestId),
+    const receiverName =
+        receiverSnap.data().username;
+
+    await addDoc(
+        collection(db, "notifications"),
         {
-            status: "rejected"
+            receiverId: requestData.senderId,
+            text: `${receiverName} accepted your friend request`,
+            createdAt: serverTimestamp()
         }
     );
 
-    alert("Friend request rejected!");
+    alert("Friend request accepted!");
 
     loadRequests();
 };
