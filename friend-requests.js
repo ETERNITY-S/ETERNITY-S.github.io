@@ -124,4 +124,17 @@ window.acceptRequest = async function(requestId) {
     alert("Friend request accepted!");
 
     loadRequests();
+    window.rejectRequest = async function(requestId) {
+
+    await updateDoc(
+        doc(db, "friendRequests", requestId),
+        {
+            status: "rejected"
+        }
+    );
+
+    alert("Friend request rejected!");
+
+    loadRequests();
+};
 };
