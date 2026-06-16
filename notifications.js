@@ -31,11 +31,10 @@ async function loadNotifications(userId) {
 
     container.innerHTML = "";
 
-    const q = query(
-        collection(db, "notifications"),
-        where("receiverId", "==", userId),
-        orderBy("createdAt", "desc")
-    );
+   const q = query(
+    collection(db, "notifications"),
+    where("receiverId", "==", userId)
+);
 
     const snapshot =
         await getDocs(q);
