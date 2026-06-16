@@ -19,6 +19,7 @@ import {
 
 let currentUser = null;
 let selectedFriendId = null;
+let unsubscribeMessages = null;
 
 onAuthStateChanged(auth, async (user) => {
 
@@ -160,49 +161,57 @@ async function loadMessages() {
     const container =
         document.getElementById("messagesContainer");
 
-    container.innerHTML = "";
+    if (unsubscribeMessages) {
 
-    const snapshot =
-        await getDocs(
-            query(
-                collection(db, "messages"),
-                orderBy("createdAt")
-            )
-        );
+        unsubscribeMessages();
+    }
 
-    snapshot.forEach((msgDoc) => {
+    unsubscribeMessages = onSnapshot(
 
-        const msg = msgDoc.data();
+        query(
+            collection(db, "messages"),
+            orderBy("createdAt")
+        ),
 
-        const belongsToChat =
+        (snapshot) => {
 
-            (
-                msg.senderId === currentUser.uid &&
-                msg.receiverId === selectedFriendId
-            )
+            container.innerHTML = "";
 
-            ||
+            snapshot.forEach((msgDoc) => {
 
-            (
-                msg.senderId === selectedFriendId &&
-                msg.receiverId === currentUser.uid
-            );
+                const msg = msgDoc.data();
 
-        if (!belongsToChat) return;
+                const belongsToChat =
 
-        const cssClass =
-            msg.senderId === currentUser.uid
-            ? "sent"
-            : "received";
+                    (
+                        msg.senderId === currentUser.uid &&
+                        msg.receiverId === selectedFriendId
+                    )
 
-        container.innerHTML += `
-            <div class="message ${cssClass}">
-                ${msg.text}
-            </div>
-        `;
-    });
+                    ||
 
-    container.scrollTop =
-        container.scrollHeight;
+                    (
+                        msg.senderId === selectedFriendId &&
+                        msg.receiverId === currentUser.uid
+                    );
+
+                if (!belongsToChat) return;
+
+                const cssClass =
+
+                    msg.senderId === currentUser.uid
+                    ? "sent"
+                    : "received";
+
+                container.innerHTML += `
+                    <div class="message ${cssClass}">
+                        ${msg.text}
+                    </div>
+                `;
+            });
+
+            container.scrollTop =
+                container.scrollHeight;
+        }
+    );
 }
-                
