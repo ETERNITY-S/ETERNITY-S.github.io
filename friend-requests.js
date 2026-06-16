@@ -88,7 +88,7 @@ async function loadRequests() {
 }
 
 
-};
+
 window.acceptRequest = async function(requestId) {
 
     await updateDoc(
