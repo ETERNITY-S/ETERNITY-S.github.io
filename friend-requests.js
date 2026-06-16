@@ -87,6 +87,8 @@ async function loadRequests() {
     }
 }
 
+
+};
 window.acceptRequest = async function(requestId) {
 
     await updateDoc(
@@ -117,13 +119,14 @@ window.acceptRequest = async function(requestId) {
         {
             receiverId: requestData.senderId,
             text: `${receiverName} accepted your friend request`,
-            createdAt: serverTimestamp()
+            createdAt: serverTimestamp(),
+            read: false
         }
     );
 
-   alert("Friend request accepted!");
+    alert("Friend request accepted!");
 
-loadRequests();
+    loadRequests();
 
 };
 
@@ -133,6 +136,32 @@ window.rejectRequest = async function(requestId) {
         doc(db, "friendRequests", requestId),
         {
             status: "rejected"
+        }
+    );
+
+    const requestSnap =
+        await getDoc(
+            doc(db, "friendRequests", requestId)
+        );
+
+    const requestData =
+        requestSnap.data();
+
+    const receiverSnap =
+        await getDoc(
+            doc(db, "users", currentUser.uid)
+        );
+
+    const receiverName =
+        receiverSnap.data().username;
+
+    await addDoc(
+        collection(db, "notifications"),
+        {
+            receiverId: requestData.senderId,
+            text: `${receiverName} rejected your friend request`,
+            createdAt: serverTimestamp(),
+            read: false
         }
     );
 
