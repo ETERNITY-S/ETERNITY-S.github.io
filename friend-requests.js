@@ -121,10 +121,13 @@ window.acceptRequest = async function(requestId) {
         }
     );
 
-    alert("Friend request accepted!");
+   alert("Friend request accepted!");
 
-    loadRequests();
-    window.rejectRequest = async function(requestId) {
+loadRequests();
+
+};
+
+window.rejectRequest = async function(requestId) {
 
     await updateDoc(
         doc(db, "friendRequests", requestId),
@@ -136,5 +139,5 @@ window.acceptRequest = async function(requestId) {
     alert("Friend request rejected!");
 
     loadRequests();
-};
+
 };
