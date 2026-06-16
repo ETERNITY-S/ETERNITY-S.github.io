@@ -14,22 +14,21 @@ import {
     updateDoc,
     addDoc,
     serverTimestamp
-}from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 let currentUser = null;
 
 onAuthStateChanged(auth, async (user) => {
 
     if (!user) {
-
         window.location.href = "index.html";
-
         return;
     }
 
     currentUser = user;
 
     loadRequests();
+
 });
 
 async function loadRequests() {
@@ -51,11 +50,10 @@ async function loadRequests() {
 
         const request = requestDoc.data();
 
-        const senderRef =
-            doc(db, "users", request.senderId);
-
         const senderSnap =
-            await getDoc(senderRef);
+            await getDoc(
+                doc(db, "users", request.senderId)
+            );
 
         const senderData =
             senderSnap.data();
@@ -70,13 +68,11 @@ async function loadRequests() {
 
                 <div class="request-actions">
 
-                    <button
-                        onclick="acceptRequest('${requestDoc.id}')">
+                    <button onclick="acceptRequest('${requestDoc.id}')">
                         Accept
                     </button>
 
-                    <button
-                        onclick="rejectRequest('${requestDoc.id}')">
+                    <button onclick="rejectRequest('${requestDoc.id}')">
                         Reject
                     </button>
 
@@ -86,8 +82,6 @@ async function loadRequests() {
         `;
     }
 }
-
-
 
 window.acceptRequest = async function(requestId) {
 
@@ -127,7 +121,6 @@ window.acceptRequest = async function(requestId) {
     alert("Friend request accepted!");
 
     loadRequests();
-
 };
 
 window.rejectRequest = async function(requestId) {
@@ -168,5 +161,4 @@ window.rejectRequest = async function(requestId) {
     alert("Friend request rejected!");
 
     loadRequests();
-
 };
