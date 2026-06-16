@@ -8,8 +8,7 @@ import {
     collection,
     query,
     where,
-    getDocs,
-    orderBy
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 onAuthStateChanged(auth, async (user) => {
@@ -36,8 +35,9 @@ async function loadNotifications(userId) {
     where("receiverId", "==", userId)
 );
 
-    const snapshot =
-        await getDocs(q);
+   onSnapshot(q, (snapshot) => {
+
+    container.innerHTML = "";
 
     snapshot.forEach((notificationDoc) => {
 
@@ -50,4 +50,5 @@ async function loadNotifications(userId) {
             </div>
         `;
     });
-}
+
+});
