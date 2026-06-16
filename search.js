@@ -8,7 +8,9 @@ import {
     collection,
     getDocs,
     addDoc,
-    serverTimestamp
+    serverTimestamp,
+    doc,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 let currentUser = null;
@@ -69,6 +71,23 @@ window.sendRequest = async function(receiverId) {
             senderId: currentUser.uid,
             receiverId: receiverId,
             status: "pending",
+            createdAt: serverTimestamp()
+        }
+    );
+
+    const senderSnap =
+        await getDoc(
+            doc(db, "users", currentUser.uid)
+        );
+
+    const senderName =
+        senderSnap.data().username;
+
+    await addDoc(
+        collection(db, "notifications"),
+        {
+            receiverId: receiverId,
+            text: `${senderName} sent you a friend request`,
             createdAt: serverTimestamp()
         }
     );
